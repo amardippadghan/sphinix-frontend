@@ -26,12 +26,13 @@ const Login = () => {
       if (!response.status === 200) {
         throw new Error(data.error || "Login failed");
       }
+      localStorage.setItem("UserId", data.data.user.id);
 
       localStorage.setItem("token", data.data.token);
       setError("");
       // Redirect or perform any other actions after successful login
       console.log("Login successful", data);
-      navigate("/homepage");
+      navigate("/subscribe");
     } catch (error) {
       setError(error.message);
     }
@@ -50,7 +51,7 @@ const Login = () => {
           }
         );
         console.log("User is authenticated:", response.data);
-        navigate("/homepage");
+        navigate("/subscribe");
       } catch (error) {
         console.error("Error verifying user:", error);
         localStorage.removeItem("token");
