@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
@@ -18,6 +20,35 @@ function HomePage() {
     };
 
     fetchData();
+  }, []);
+
+  const validateSub = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("UserId");
+      if (!token) {
+        navigate("/");
+      }
+      const res = await axios.get(
+        `http://localhost:3000/api/auth/sub/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res.data);
+      if (res.status === 200) {
+        navigate("/homepage");
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  useEffect(() => {
+    validateSub();
   }, []);
 
   return (
