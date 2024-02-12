@@ -20,6 +20,7 @@ function HomePage() {
     };
 
     fetchData();
+    validateSub();
   }, []);
 
   const validateSub = async () => {
@@ -46,10 +47,6 @@ function HomePage() {
       alert(error);
     }
   };
-
-  useEffect(() => {
-    validateSub();
-  }, []);
 
   return (
     <div className="container mx-auto">
