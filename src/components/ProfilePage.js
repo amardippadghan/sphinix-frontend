@@ -61,7 +61,7 @@ function ProfilePage() {
             <p className="mb-2">
               <span className="font-semibold">Number:</span> {userData.number}
             </p>
-            {userData.hasSubscribe ? (
+            {/* {userData?.hasSubscribe ? (
               <p className="mb-2">
                 <span className="font-semibold">Subscription Type:</span>
                 Premium
@@ -70,7 +70,7 @@ function ProfilePage() {
               <p className="mb-2">
                 <span className="font-semibold">Subscription Type:</span> Free
               </p>
-            )}
+            )} */}
           </div>
         )}
       </div>

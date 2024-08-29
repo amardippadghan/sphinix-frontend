@@ -1,7 +1,7 @@
 import "./App.css";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import NotFound from "./components/NotFound";
 import Subscribe from "./components/Subscribe";

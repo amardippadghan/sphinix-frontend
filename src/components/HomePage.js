@@ -5,46 +5,51 @@ import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
-  const [articles, setArticles] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchTasks = async () => {
       try {
         const response = await axios.get(
-          "https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=8966cfb813eb458d9a3b432600a79451"
+          `http://localhost:3000/api/task/getTask?user=${localStorage.getItem("UserId")}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
-        setArticles(response.data.articles);
+
+        setTasks(response.data.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching tasks:", error);
       }
     };
 
-    fetchData();
-    validateSub();
+    fetchTasks();
   }, []);
 
-  const validateSub = async () => {
+  const markAsComplete = async (taskId) => {
     try {
-      const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("UserId");
-      if (!token) {
-        navigate("/");
-      }
-      const res = await axios.get(
-        `http://localhost:3000/api/auth/sub/${userId}`,
+      const response = await axios.patch(
+        "http://localhost:3000/api/task/updateTask",
+        { _id: taskId, status: "completed" },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      console.log(res.data);
-      if (res.status === 200) {
-        navigate("/homepage");
-      }
+
+      // Update the task list to reflect the completed status
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === taskId ? { ...task, status: "completed" } : task
+        )
+      );
+
+      console.log("Task updated:", response.data);
     } catch (error) {
-      alert(error);
+      console.error("Error updating task:", error);
     }
   };
 
@@ -52,25 +57,23 @@ function HomePage() {
     <div className="container mx-auto">
       <Navbar />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {articles.map((article, index) => (
-          <div key={index} className="bg-white shadow-md rounded-lg p-4">
-            <img
-              src={article.urlToImage}
-              alt={article.title}
-              className="w-full h-32 object-cover mb-4"
-            />
-            <h2 className="text-xl font-semibold text-gray-800">
-              {article.title}
-            </h2>
-            <p className="text-gray-600 text-sm">{article.description}</p>
-            <a
-              href={article.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 mt-2 inline-block"
-            >
-              Read more
-            </a>
+        {tasks.map((task) => (
+          <div key={task._id} className="bg-white shadow-md rounded-lg p-4">
+            <h2 className="text-xl font-semibold text-gray-800">{task.title}</h2>
+            <p className="text-gray-600 text-sm">{task.description}</p>
+            <p className="text-gray-500 text-xs">
+              Due Date: {new Date(task.dueDate).toLocaleDateString()}
+            </p>
+            <p className="text-gray-500 text-xs">Priority: {task.priority}</p>
+            <p className="text-gray-500 text-xs">Status: {task.status}</p>
+            {task.status !== "completed" && (
+              <button
+                onClick={() => markAsComplete(task._id)}
+                className="mt-2 bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition"
+              >
+                Mark as Complete
+              </button>
+            )}
           </div>
         ))}
       </div>
