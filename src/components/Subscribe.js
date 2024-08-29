@@ -28,7 +28,7 @@ function Subscribe() {
         UtrNumber: utrNumber,
       };
 
-      const res = await axios.post("http://localhost:3000/api/request", data, {
+      const res = await axios.post("https://sphinix-backend.onrender.com/api/request", data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Subscribe() {
         navigate("/");
       }
       const res = await axios.get(
-        `http://localhost:3000/api/auth/sub/${userId}`,
+        `https://sphinix-backend.onrender.com/api/auth/sub/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

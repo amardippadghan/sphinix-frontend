@@ -11,7 +11,7 @@ function HomePage() {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/task/getTask?user=${localStorage.getItem("UserId")}`,
+          `https://sphinix-backend.onrender.com/api/task/getTask?user=${localStorage.getItem("UserId")}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -31,7 +31,7 @@ function HomePage() {
   const markAsComplete = async (taskId) => {
     try {
       const response = await axios.patch(
-        "http://localhost:3000/api/task/updateTask",
+        "https://sphinix-backend.onrender.com/api/task/updateTask",
         { _id: taskId, status: "completed" },
         {
           headers: {

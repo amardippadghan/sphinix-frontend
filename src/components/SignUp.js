@@ -19,7 +19,7 @@ const Signup = () => {
     };
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        "https://sphinix-backend.onrender.com/api/auth/signup",
         data,
         {
           headers: {

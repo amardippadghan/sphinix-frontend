@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://sphinix-backend.onrender.com/api/auth/login",
         { email, password },
         {
           headers: {
@@ -43,7 +43,7 @@ const Login = () => {
   //   if (token) {
   //     try {
   //       const response = await axios.get(
-  //         "http://localhost:3000/api/auth/verify-token",
+  //         "https://sphinix-backend.onrender.com/api/auth/verify-token",
   //         {
   //           headers: {
   //             Authorization: `Bearer ${token}`,
